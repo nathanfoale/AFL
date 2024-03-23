@@ -1,0 +1,86 @@
+import pandas as pd
+pd.get_option("display.max_columns")
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+%matplotlib inline
+sns.set(color_codes=True)
+
+data = pd.read_csv('/Users/nathanfoale/Downloads/VFL_Spreadsheet.csv')
+data
+
+data.dtypes
+
+data.describe(include='all')
+
+data.hist(figsize=(20,30))
+
+sns.boxplot(x='CL, NMFC', y='2022 VFL Season', data = data)
+
+sns.relplot(x='CP, NMFC', y='2022 VFL Season', data = data)
+
+nmfc = pd.read_csv('/Users/nathanfoale/Downloads/NMFC_VFL_Stats.csv')
+nmfc
+
+nmfc.describe(include='all')
+
+# Contested Possesion Visualisation
+round = [1, 2, 4, 5, 6, 7, 8, 10, 11, 12, 14, 15, 16]
+cp = [127, 107, 136, 150, 135, 118, 129, 133, 121, 130, 158, 120, 118]
+cp_mean = [np.mean(cp)]*len(round)
+
+
+plt.plot(round, cp, color='red', marker='o')
+plt.title('Contested Possessions', fontsize = 14)
+plt.xlabel('Round', fontsize = 14)
+plt.xticks(round)
+plt.ylabel('Contested Possesions', fontsize = 14)
+plt.grid(True)
+plt.axhline(y=np.nanmean(cp), color='red', linestyle='--', linewidth=1, label='Average')
+
+plt.legend(loc='upper left')
+plt.show()
+
+plt.plot(cp, label = 'Data')
+plt.plot(cp_mean, label = 'Average')
+
+
+# 2 / 3 games won, NMFC have had a > than average game in terms of CP
+
+# To get a deeper understanding of CP data and its correlation to winning, i want to look at CP differential instead of total
+
+round = [1 , 2, 4, 5, 6, 7, 8, 10, 11, 12, 14, 15, 16]
+cp_diff = [26, -36, 4, -1, -21, -30, -47, -14, -26, 6, 40, -29, -20]
+cp_mean = [np.mean(cp_diff)]*len(round)
+
+plt.plot(round, cp_diff, color='red', marker='o')
+
+plt.title('Contested Possession Differential', fontsize = 14)
+plt.xlabel('Round', fontsize = 14)
+plt.xticks(round)
+plt.ylabel('Differential', fontsize = 14)
+plt.grid(True)
+plt.axhline(y=np.nanmean(cp_diff), color='red', linestyle='--', linewidth=1, label='Avg CP Differential')
+
+plt.legend(loc='upper left')
+plt.show()
+
+round = [1, 2, 4, 5, 6, 7, 8, 10, 11, 12, 14, 15, 16]
+nmfc_gbg_post = [53, 50, 61, 60, 65, 52, 58, 58, 62, 65, 94, 57, 55]
+opp_gbg_post = [42, 69, 59, 73, 75, 75, 72, 55, 77, 64, 46, 70, 68]
+
+gbg_mean = [np.mean(nmfc_gbg_post)]*len(round)
+
+plt.plot(gbg_mean, label = 'Average', color='red', linestyle='--', linewidth=2)
+
+plt.plot(round, nmfc_gbg_post, color='blue', marker='o', label = 'NMFC')
+plt.plot(round, opp_gbg_post, color='red', marker='o', label = 'OPP')
+plt.plot('Ground Ball Gets (Post Clearance')
+plt.xlabel('Round', fontsize = 14)
+plt.xticks(round)
+plt.ylabel('Ground Ball Gets (Post)', fontsize = 14)
+plt.grid(True)
+
+
+plt.legend(loc='upper left')
+plt.show()
